@@ -1,10 +1,21 @@
 package com.example.recyclerreminder;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,11 +25,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String TAG = "MainActivity";
     public static final String PREF_SCHEDULE = "sharedPrefChoices";
+
     private SharedPreferences mRecycleSchedule;
 
     private Map<String, Map<String, Boolean>> mScheduleMap;
@@ -26,7 +40,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Map<String, CardView> mCardMap;
 
+    TimePickerDialog mTimePickerDialog;
+    TimePicker timePicker;
+
     //  TODO: the app should notify the user to throw out the trash the day before, ie. if there is waste to dispose of on Monday, the notification should arrive Sunday evening
+    //  TODO: The alarm should open a NotificationActivity informing the user what waste is scheduled for the following morning (the alarm should fire at 21:30 by default)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +72,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         mWasteList = getResources().getStringArray(R.array.waste);
         getWasteForCurrentDay(v.getTag().toString(), mWasteList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater= getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_alarm) {
+            //  TODO: Implement Activity to change time of alarm
+            changeReminderTime(true);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void displayRecycleDialog(String day, String[] items, boolean[] status) {
@@ -123,4 +157,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else
             for (CardView card : mCardMap.values()) mScheduleMap.put(card.getTag().toString(), new HashMap<>());
     }
+
+    private void changeReminderTime(boolean is24Hr) {
+        Calendar calendar = Calendar.getInstance();
+        TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this,
+                onTimeSetListener, 21,
+                30, is24Hr);
+        timePickerDialog.setTitle(getString(R.string.time_picker_dialog));
+        timePickerDialog.show();
+
+    }
+
+    private void setAlarm(Calendar calendar) {
+        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getBaseContext(), 1, intent, 0
+        );
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
+
+    TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            Calendar calendar = Calendar.getInstance();
+            Calendar alarmCalendar = (Calendar) calendar.clone();
+            alarmCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            alarmCalendar.set(Calendar.MINUTE, minute);
+            alarmCalendar.set(Calendar.SECOND, 0);
+            alarmCalendar.set(Calendar.MILLISECOND, 0);
+
+            if (alarmCalendar.compareTo(calendar) <= 0) {
+                // Today Set time passed, count to tomorrow
+                alarmCalendar.add(Calendar.DATE, 1);
+            }
+
+            setAlarm(alarmCalendar);
+        }
+    };
 }
