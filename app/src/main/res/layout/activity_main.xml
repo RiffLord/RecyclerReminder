@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <!-- TODO: put a RelativeLayout or similar within each CardView to contain the day TextView and
+                a series of icons for each waste category, to be displayed or hidden depending on
+                the value in the SharedPreferences -->
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mondayCard"
+        android:tag="@string/monday"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="366dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="4dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mondayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/monday"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mondayWaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/tuesdayCard"
+        android:tag="@string/tuesday"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="366dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mondayCard"
+        app:cardElevation="4dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tuesdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/tuesday"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tuesdayWaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/wednesdayCard"
+        android:tag="@string/wednesday"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="366dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tuesdayCard"
+        app:cardElevation="4dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/wednesdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/wednesday"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/wednesdayWaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/thursdayCard"
+        android:tag="@string/thursday"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="366dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wednesdayCard"
+        app:cardElevation="4dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/thursdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/thursday"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/thursdayWaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/fridayCard"
+        android:tag="@string/friday"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="366dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thursdayCard"
+        app:cardElevation="4dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/fridayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/friday"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/fridayWaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/saturdayCard"
+        android:tag="@string/saturday"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="366dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fridayCard"
+        app:cardElevation="4dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/saturdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/saturday"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/saturdayWaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
