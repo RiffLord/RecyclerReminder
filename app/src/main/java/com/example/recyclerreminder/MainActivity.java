@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = "MainActivity";
     public static final String PREF_SCHEDULE = "sharedPrefChoices";
+    public static final String PREF_ALARMHRS = "sharedPrefAlarmHr";
+    public static final String PREF_ALARMMINS = "sharedPrefAlarmMin";
 
     private SharedPreferences mRecycleSchedule;
 
@@ -40,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Map<String, CardView> mCardMap;
 
-    TimePickerDialog mTimePickerDialog;
-    TimePicker timePicker;
+    private int mAlarmHrs;
+    private int mAlarmMins;
 
     //  TODO: the app should notify the user to throw out the trash the day before, ie. if there is waste to dispose of on Monday, the notification should arrive Sunday evening
     //  TODO: The alarm should open a NotificationActivity informing the user what waste is scheduled for the following morning (the alarm should fire at 21:30 by default)
@@ -66,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         loadRecycleSchedule();
         displayWasteSchedule();
+
+        Log.d(TAG, "HOURS: " + mAlarmHrs);
+        Log.d(TAG, "MINUTES: " + mAlarmMins);
     }
 
     @Override
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_alarm) {
-            //  TODO: Implement Activity to change time of alarm
+            loadAlarmSettings();
             changeReminderTime(true);
         }
         return super.onOptionsItemSelected(item);
@@ -158,14 +164,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (CardView card : mCardMap.values()) mScheduleMap.put(card.getTag().toString(), new HashMap<>());
     }
 
+    private void loadAlarmSettings() {
+        mRecycleSchedule = MainActivity.this.getPreferences(MODE_PRIVATE);
+        mAlarmHrs = mRecycleSchedule.getInt(PREF_ALARMHRS, 21);
+        mAlarmMins = mRecycleSchedule.getInt(PREF_ALARMMINS, 30);
+    }
+
+    private void saveAlarmSettings(int hrs, int mins) {
+        mRecycleSchedule = MainActivity.this.getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = mRecycleSchedule.edit();
+        prefEditor.putInt(PREF_ALARMHRS, hrs).apply();
+        prefEditor.putInt(PREF_ALARMMINS, mins).apply();
+    }
+
     private void changeReminderTime(boolean is24Hr) {
-        Calendar calendar = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this,
-                onTimeSetListener, 21,
-                30, is24Hr);
+                onTimeSetListener, mAlarmHrs,
+                mAlarmMins, is24Hr);
         timePickerDialog.setTitle(getString(R.string.time_picker_dialog));
         timePickerDialog.show();
-
     }
 
     private void setAlarm(Calendar calendar) {
@@ -177,22 +194,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
-    TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            Calendar calendar = Calendar.getInstance();
-            Calendar alarmCalendar = (Calendar) calendar.clone();
-            alarmCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            alarmCalendar.set(Calendar.MINUTE, minute);
-            alarmCalendar.set(Calendar.SECOND, 0);
-            alarmCalendar.set(Calendar.MILLISECOND, 0);
+    TimePickerDialog.OnTimeSetListener onTimeSetListener = (view, hourOfDay, minute) -> {
+        Calendar calendar = Calendar.getInstance();
+        Calendar alarmCalendar = (Calendar) calendar.clone();
+        alarmCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        alarmCalendar.set(Calendar.MINUTE, minute);
+        alarmCalendar.set(Calendar.SECOND, 0);
+        alarmCalendar.set(Calendar.MILLISECOND, 0);
 
-            if (alarmCalendar.compareTo(calendar) <= 0) {
-                // Today Set time passed, count to tomorrow
-                alarmCalendar.add(Calendar.DATE, 1);
-            }
+        saveAlarmSettings(hourOfDay, minute);
 
-            setAlarm(alarmCalendar);
+        if (alarmCalendar.compareTo(calendar) <= 0) {
+            // Today Set time passed, count to tomorrow
+            alarmCalendar.add(Calendar.DATE, 1);
         }
+
+        setAlarm(alarmCalendar);
     };
 }
