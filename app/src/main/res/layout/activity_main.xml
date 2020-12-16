@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="8dp"
     tools:context=".MainActivity">
 
     <!-- TODO: put a RelativeLayout or similar within each CardView to contain the day TextView and
@@ -17,8 +17,6 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="366dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -30,7 +28,7 @@
             android:id="@+id/mondayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_margin="32dp"
             android:text="@string/monday"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
@@ -50,8 +48,6 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="366dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -63,7 +59,7 @@
             android:id="@+id/tuesdayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_margin="32dp"
             android:text="@string/tuesday"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
@@ -83,8 +79,6 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="366dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -96,7 +90,7 @@
             android:id="@+id/wednesdayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_margin="32dp"
             android:text="@string/wednesday"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
@@ -116,8 +110,6 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="366dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -129,7 +121,7 @@
             android:id="@+id/thursdayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_margin="32dp"
             android:text="@string/thursday"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
@@ -149,8 +141,6 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="366dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -162,7 +152,7 @@
             android:id="@+id/fridayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_margin="32dp"
             android:text="@string/friday"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
@@ -182,8 +172,6 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="366dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -195,7 +183,7 @@
             android:id="@+id/saturdayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_margin="32dp"
             android:text="@string/saturday"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
