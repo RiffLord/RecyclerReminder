@@ -1,12 +1,17 @@
 package com.example.recyclerreminder;
 
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String PREF_SCHEDULE = "sharedPrefChoices";
     public static final String PREF_ALARMHRS = "sharedPrefAlarmHr";
     public static final String PREF_ALARMMINS = "sharedPrefAlarmMin";
+    private static final String CHANNEL_ID = "200";
 
     private SharedPreferences mRecycleSchedule;
 
@@ -72,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d(TAG, "HOURS: " + mAlarmHrs);
         Log.d(TAG, "MINUTES: " + mAlarmMins);
+
+        createNotificationChannel();
     }
 
     @Override
@@ -188,10 +196,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setAlarm(Calendar calendar) {
         Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getBaseContext(), 1, intent, 0
+                getBaseContext(), 1, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        //  Enables the receiver and keeps it enabled even in the case of a device reboot
+        ComponentName receiver = new ComponentName(this, MainActivity.class);
+        PackageManager pm = this.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
     }
 
     TimePickerDialog.OnTimeSetListener onTimeSetListener = (view, hourOfDay, minute) -> {
@@ -211,4 +226,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setAlarm(alarmCalendar);
     };
+
+    //  Call this to disable the alarm receiver
+    private void disableAlarmReceiver() {
+        ComponentName receiver = new ComponentName(this, MainActivity.class);
+        PackageManager pm = this.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 }
